@@ -1,4 +1,5 @@
 const inquirer = require("inquirer");
+require("console.table");
 
 //Connect with the database
 const mysql = require("mysql2");
@@ -72,7 +73,24 @@ function askUser() {
 }
 
 function viewEmployees() {
-  console.log("you chose to view the employees");
+  db.query("SELECT * FROM employee", (err, employee) => {
+    if (err) {
+      console.log(err);
+    }
+  });
+  console.table(employee);
+  askUser();
+}
+
+//View department
+function viewEmployeesByDepartment() {
+  db.query("SELECT * FROM department", (err, department) => {
+    if (err) {
+      console.log(err);
+    }
+  });
+  console.table(department);
+  askUser();
 }
 
 //Adding a new employee
@@ -106,7 +124,7 @@ function addEmployee() {
       if (emp.manager === "yes") {
         //delete a key value from an object
         delete emp.manager;
-        db.query("INSERT INTO employee SET ?",emp, (err) => {
+        db.query("INSERT INTO employee SET ?", emp, (err) => {
           if (err) {
             console.log(err);
           }
@@ -171,17 +189,33 @@ function addRole() {
 }
 
 //Updating a new role
-function updateRole(){
+function updateRole() {
   inquirer
-  .prompt([{
-    type:"input",
-    name:"id",
-    message:"What is the id id of the employee you would like to update?"
-  }])
-  .then(res=>{
-    
-  })
+    .prompt([
+      {
+        type: "input",
+        name: "id",
+        message: "What is the id id of the employee you would like to update?",
+      },
+      {
+        type: "input",
+        name: "role_id",
+        message: "What is the id of the role?",
+      },
+    ])
+    .then((res) => {
+      let newRole = {
+        role_id: res.role_id,
+      };
 
+      db.query(`UPDATE employee SET ? WHERE id=${res.id} `, newRole, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+      console.log("The data is added!");
+      askUser(); //Ask the user again;
+    });
 }
 
 //Adding a new department
