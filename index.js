@@ -78,6 +78,27 @@ function viewEmployees() {
   askUser();
 }
 
+//View all departments
+function viewAllDepartments() {
+  db.query("SELECT * FROM department", (err, department) => {
+    if (err) {
+      console.log(err);
+    }
+    console.table(department);
+    askUser();
+  });
+}
+
+//View all roles
+function viewAllRoles() {
+  db.query("SELECT * FROM role", (err, roles) => {
+    if (err) {
+      console.log(err);
+    }
+    console.table(roles);
+    askUser;
+  });
+}
 
 //Adding a new employee
 function addEmployee() {
@@ -143,6 +164,29 @@ function addEmployee() {
       }
     });
 }
+
+//Adding a new department
+function addDepartment() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "What is the name of the department you would like to add?",
+      },
+    ])
+    //? means anything comes next
+    .then((name) => {
+      db.query("INSERT INTO department SET ?", name, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+      console.log("The data is added!");
+      askUser(); //Ask the user again
+    });
+}
+
 //Adding a new role
 function addRole() {
   inquirer
@@ -181,7 +225,7 @@ function updateRole() {
       {
         type: "input",
         name: "id",
-        message: "What is the id id of the employee you would like to update?",
+        message: "What is the id of the employee you would like to update?",
       },
       {
         type: "input",
@@ -201,28 +245,6 @@ function updateRole() {
       });
       console.log("The data is added!");
       askUser(); //Ask the user again;
-    });
-}
-
-//Adding a new department
-function addDepartment() {
-  inquirer
-    .prompt([
-      {
-        type: "input",
-        name: "name",
-        message: "What is the name of the department you would like to add?",
-      },
-    ])
-    //? means anything comes next
-    .then((name) => {
-      db.query("INSERT INTO department SET ?", name, (err) => {
-        if (err) {
-          console.log(err);
-        }
-      });
-      console.log("The data is added!");
-      askUser(); //Ask the user again
     });
 }
 
