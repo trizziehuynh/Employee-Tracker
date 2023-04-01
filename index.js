@@ -27,13 +27,12 @@ function askUser() {
         message: "What would you like to do?",
         choices: [
           "View All Employees",
-          "View All Employees By Department",
-          "Add Employee",
+          "View All Departments",
           "View All Roles",
+          "Add Employee",
+          "Add Department",
           "Add Role",
           "Update Role",
-          "View All Departments",
-          "Add Department",
           "Quit",
         ],
       },
@@ -45,26 +44,23 @@ function askUser() {
         case "View All Employees":
           viewEmployees();
           break;
-        case "View All Employees By Department":
-          viewEmployeesByDepartment();
+        case "View All Departments":
+          viewAllDepartments();
+          break;
+        case "View All Roles":
+          viewAllRoles();
           break;
         case "Add Employee":
           addEmployee();
           break;
-        case "View All Roles":
-          viewRoles();
+        case "Add Department":
+          addDepartment();
           break;
         case "Add Role":
           addRole();
           break;
         case "Update Role":
           updateRole();
-          break;
-        case "View All Departments":
-          viewDepartments();
-          break;
-        case "Add Department":
-          addDepartment();
           break;
         default:
           console.log("Quit");
@@ -82,16 +78,6 @@ function viewEmployees() {
   askUser();
 }
 
-//View department
-function viewEmployeesByDepartment() {
-  db.query("SELECT * FROM department", (err, department) => {
-    if (err) {
-      console.log(err);
-    }
-  });
-  console.table(department);
-  askUser();
-}
 
 //Adding a new employee
 function addEmployee() {
